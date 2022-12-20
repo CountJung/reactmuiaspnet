@@ -1,0 +1,4 @@
+프로젝트 생성은 다음 가이드 참고
+https://docs.microsoft.com/ko-kr/aspnet/core/client-side/spa/react?view=aspnetcore-6.0&tabs=visual-studio
+
+* 환경이 바뀐경우 ClientApp 폴더의 .env.development.local 의 내용을 비우고 실행한다(인증키 관련 경로가 안 맞음)
