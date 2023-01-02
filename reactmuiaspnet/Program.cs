@@ -1,10 +1,16 @@
+using reactmuiaspnet.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton(new MainService());
 
 var app = builder.Build();
+
+//var Main = app.Services.GetService<MainService>();
+//Main = new MainService();
 
 // Configure the HTTP request pipeline.
 //if (!app.Environment.IsDevelopment())

@@ -1,4 +1,5 @@
-
+import { Box, Container, Grid } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import React from 'react';
 import {
     Chart as ChartJS,
@@ -15,6 +16,7 @@ import {
 } from 'chart.js';
 import { Chart, Pie } from 'react-chartjs-2';
 import faker from 'faker';
+import { Budget } from './budget';
 
 ChartJS.register(
     LinearScale,
@@ -141,11 +143,17 @@ export const pieData = {
     ],
 };
 
-export function Home() {
+export function ChartJSTestPage() {
     return (
         <>
-            <Chart type='bar' data={data} options={option} />
-            <Pie data={pieData} options={pieOption} />
+            <Grid container spacing={5} direction="column">
+                <Grid item lg={'auto'} sm={'auto'} xl={'auto'} xs={'auto'}>
+                    <Chart type='bar' data={data} options={option} />
+                </Grid>
+                <Grid item lg={'auto'} sm={'auto'} xl={'auto'} xs={'auto'}>
+                    <Pie data={pieData} options={pieOption} />
+                </Grid>
+            </Grid>
         </>
     );
 }

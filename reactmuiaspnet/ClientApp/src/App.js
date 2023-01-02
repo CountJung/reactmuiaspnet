@@ -43,15 +43,19 @@ import * as React from 'react';
 import { Route, Routes } from 'react-router';
 import { Counter } from './components/Counter';
 import { FetchData } from './components/FetchData';
-import { Home } from './components/Home';
+import { ChartJSTestPage } from './components/Home';
 import { amber, deepOrange, orange, grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
+import { Container, Grid } from '@mui/material';
+import { Budget } from './components/budget';
+import { TrafficByDevice } from './components/TrafficDevice';
+import { ProductPage } from './Pages/Products';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 const navItems = ['Home', 'counter', 'fetchData', 'swagger'];
 
 const getDesignTokens = (mode) => ({
@@ -149,121 +153,195 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft() {
+export default function DrawerLeft(props) {
+    const { window } = props;
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    //const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
+    //const handleDrawerOpen = () => {
+    //    setOpen(true);
+    //};
+
+    //const handleDrawerClose = () => {
+    //    setOpen(false);
+    //};
+
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
     };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    const drawer = (
+        <div>
+            <Toolbar />
+            <Divider />
+            <List>
+                {['ChartJSTestPage', 'counter', 'fetchdata', 'ProductPage'].map((text, index) => (
+                    <ListItem key={text} component="a" href={"/" + text} sx={{ textAlign: 'center' }} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                            </ListItemIcon>
+                            <ListItemText primary={text} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </div>
+    );
+    const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
         <ThemeProvider theme={darkModeTheme}>
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}>
-                        <MenuIcon />
+                <AppBar position="fixed" sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                }}>
+                    <Toolbar>
+                        {/*sx={{ mr: 2, ...(open && { display: 'none' }) }}*/}
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerToggle}
+                            edge="start" sx={{ mr: 2, display: { sm: 'none' } }}
+                        > 
+                            <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap component="div" >
-                        Persistent drawer
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                }}
-                variant="persistent"
-                anchor="left"
-                open={open}>
-                <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    {['Home', 'counter', 'fetchdata'].map((text, index) => (
-                        <ListItem key={text} component="a" href={"/" + text} sx={{ textAlign: 'center' }} disablePadding > 
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                        {/*{navItems.map((item) => (*/}
-                        {/*    <ListItem button key={item} component="a" href={"/" + item} sx={{ textAlign: 'center' }}>*/}
-                        {/*        <ListItemText primary={item} />*/}
-                        {/*    </ListItem>*/}
-                        {/*))}*/}
-                </List>
-            </Drawer>
-            <Main open={open}>
-                <DrawerHeader />
-                    <Routes>
-                        <Route path='/' element={<Home />} />
-                    <Route path='/Home' element={<Home />} />
-                    <Route path='/counter' element={<Counter />} />
-                    <Route path='/fetchdata' element={<FetchData />} />
-                    </Routes>
-                    <Stack direction="row" spacing={2}>
-                        <Button variant="contained">Contained</Button>
-                        <Button variant="contained" disabled>
-                            Disabled
-                        </Button>
-                        <Button variant="contained" href="#contained-buttons">
-                            Link
-                        </Button>
-                    </Stack>
-                    <Counter> </Counter>
-                    <Stack direction="row" spacing={2}>
-                        <Typography paragraph >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-                            enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-                            imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-                            Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-                            Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                            adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-                            nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-                            leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-                            feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-                            consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-                            sapien faucibus et molestie ac.
+                            drawer
                         </Typography>
-                        <Typography paragraph>
-                            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                            eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                            neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                            tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                            sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                            tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                            gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                            et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                            tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                            eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                            posuere sollicitudin aliquam ultrices sagittis orci a.
-                        </Typography>
-                    </Stack>
-            </Main>
+                    </Toolbar>
+                </AppBar>
+                <Box
+                    component="nav"
+                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                    aria-label="mailbox folders"
+                >
+                    <Drawer
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': {
+                                width: drawerWidth,
+                                boxSizing: 'border-box',
+                            },
+                        }}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                        variant="temporary" anchor="left" container={container}
+                        open={mobileOpen} onClose={handleDrawerToggle}>
+                        {/*<DrawerHeader>*/}
+                        {/*    <IconButton onClick={handleDrawerClose}>*/}
+                        {/*        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}*/}
+                        {/*    </IconButton>*/}
+                        {/*</DrawerHeader>*/}
+                        {/*<Divider />*/}
+                        {/*<List>*/}
+                        {/*    {['Home', 'counter', 'fetchdata'].map((text, index) => (*/}
+                        {/*        <ListItem key={text} component="a" href={"/" + text} sx={{ textAlign: 'center' }} disablePadding > */}
+                        {/*            <ListItemButton>*/}
+                        {/*                <ListItemIcon>*/}
+                        {/*                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
+                        {/*                </ListItemIcon>*/}
+                        {/*                <ListItemText primary={text} />*/}
+                        {/*            </ListItemButton>*/}
+                        {/*        </ListItem>*/}
+                        {/*    ))}*/}
+                        {/*    </List>*/}
+                        {drawer}
+                    </Drawer>
+                    <Drawer
+                        variant="permanent"
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                        open={mobileOpen}
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+                <Box
+                    component="main"
+                    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+                >
+                    <Container maxWidth={false}>
+                        <Stack spacing={5} direction='column'>
+                            <toolbar />
+                            <Routes>
+                                <Route path='/' element={<ChartJSTestPage />} />
+                                <Route path='/ChartJSTestPage' element={<ChartJSTestPage />} />
+                                <Route path='/counter' element={<Counter />} />
+                                <Route path='/fetchdata' element={<FetchData />} />
+                                <Route path='/ProductPage' element={<ProductPage />} />
+                            </Routes>
+                            <Grid container spacing={2} justifyContent="center" alignItems="center" >
+                                {/*xs: Column widths are integer values between 1 and 12;*/}
+                                {/*md (12 by default), 'auto', bool */}
+                                {/*<Grid item lg={3} sm={6} xl={3} xs={12} >*/}
+                                {/*    <Stack direction="row" spacing={2}>*/}
+                                {/*        <Button variant="contained">Contained</Button>*/}
+                                {/*        <Button variant="contained" disabled>*/}
+                                {/*            Disabled*/}
+                                {/*        </Button>*/}
+                                {/*        <Button variant="contained" href="#contained-buttons">*/}
+                                {/*            Link*/}
+                                {/*        </Button>*/}
+                                {/*    </Stack>*/}
+                                {/*</Grid>*/}
+                                <Grid item lg={3} sm={6} xl={3} xs={12} >
+                                    <Budget />
+                                </Grid>
+                                <Grid item lg={3} sm={6} xl={3} xs={12} >
+                                    <TrafficByDevice />
+                                </Grid>
+                                <Grid item lg={3} sm={6} xl={3} xs={12} >
+                                    <Typography paragraph >
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
+                                        enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
+                                        imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
+                                        Convallis convallis tellus id interdum velit laoreet id donec ultrices.
+                                        Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
+                                        adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
+                                        nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
+                                        leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
+                                        feugiat vivamus at augue. At augue eget arcu dictum varius duis at
+                                        consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
+                                        sapien faucibus et molestie ac.
+                                    </Typography>
+                                </Grid>
+                                <Grid item lg={3} sm={6} xl={3} xs={12} >
+                                    <Typography paragraph>
+                                        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
+                                        eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
+                                        neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
+                                        tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
+                                        sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
+                                        tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
+                                        gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
+                                        et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
+                                        tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
+                                        eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
+                                        posuere sollicitudin aliquam ultrices sagittis orci a.
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Stack>
+                        {/*<Grid container spacing={5} direction="column">*/}
+                        {/*    <Grid item lg={'auto'} sm={'auto'} xl={'auto'} xs={'auto'}>*/}
+                        {/*    </Grid>*/}
+                        {/*    <Grid item lg={'auto'} sm={'auto'} xl={'auto'} xs={'auto'}>*/}
+                        {/*    </Grid>*/}
+                        {/*</Grid>*/}
+                    </Container>
+                </Box>
+            {/*    <Main open={open}>*/}
+            {/*        <DrawerHeader />*/}
+            {/*</Main>*/}
             </Box>
         </ThemeProvider>
     );
