@@ -54,6 +54,7 @@ import { Container, Grid } from '@mui/material';
 import { Budget } from './components/budget';
 import { TrafficByDevice } from './components/TrafficDevice';
 import { ProductPage } from './Pages/Products';
+import ImageGallery from './Pages/ImageGallery';
 
 const drawerWidth = 200;
 const navItems = ['Home', 'counter', 'fetchData', 'swagger'];
@@ -177,7 +178,7 @@ export default function DrawerLeft(props) {
             <Toolbar />
             <Divider />
             <List>
-                {['ChartJSTestPage', 'counter', 'fetchdata', 'ProductPage'].map((text, index) => (
+                {['ChartJSTestPage', 'counter', 'fetchdata', 'ProductPage', 'ImageGallery'].map((text, index) => (
                     <ListItem key={text} component="a" href={"/" + text} sx={{ textAlign: 'center' }} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
@@ -277,6 +278,7 @@ export default function DrawerLeft(props) {
                                 <Route path='/counter' element={<Counter />} />
                                 <Route path='/fetchdata' element={<FetchData />} />
                                 <Route path='/ProductPage' element={<ProductPage />} />
+                                <Route path='/ImageGallery' element={<ImageGallery /> } />
                             </Routes>
                             <Grid container spacing={2} justifyContent="center" alignItems="center" >
                                 {/*xs: Column widths are integer values between 1 and 12;*/}

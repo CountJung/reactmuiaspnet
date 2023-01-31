@@ -1,4 +1,9 @@
-﻿namespace reactmuiaspnet.Services
+﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
+
+namespace reactmuiaspnet.Services
 {
     public class MainService
     {
