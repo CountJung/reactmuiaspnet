@@ -1,4 +1,4 @@
-﻿import { Box, Container, Grid, Pagination, Button, Link } from '@mui/material';
+﻿import { Box, Container, Grid, Pagination, Button, Link, Stack } from '@mui/material';
 import { ProductCard } from '../components/ProductCard';
 import { v4 as uuid } from 'uuid';
 import { useEffect, useState } from 'react';
@@ -129,36 +129,37 @@ export function ProductPage () {
 
     return (
         <div>
+            {/*The Box component works as a "Wrapper" for the component you want to "Modify" the spacing.*/}
+            {/*then you can use the next properties on the component:*/}
+            {/*The space utility converts shorthand margin and padding props to margin and padding CSS declarations. The props are named using the format {property}{sides}.*/}
+            {/*Where property is one of:*/}
+            {/*m - for classes that set margin p - for classes that set padding*/}
+            {/*Where sides is one of:*/}
+            {/*t - for classes that set margin-top or padding-top*/}
+            {/*b - for classes that set margin-bottom or padding-bottom*/}
+            {/*l - for classes that set margin-left or padding-left*/}
+            {/*r - for classes that set margin-right or padding-right*/}
+            {/*x - for classes that set both *-left and *-right*/}
+            {/*y - for classes that set both *-top and *-bottom*/}
+            {/*blank - for classes that set a margin or padding on all 4 sides of the element*/}
+            {/*as an example:*/}
+            {/*<Box m={2} pt={3}>*/}
+            {/*    <Button color="default">*/}
+            {/*        Your Text*/}
+            {/*    </Button>*/}
+            {/*</Box>*/}
             <Box
                 component="main"
                 sx={{
-                    flexGrow: 1,
-                    py: 8
+                    backgroundColor: 'primary.light',
+                    flexGrow: 1, display: 'flex', justifyContent: 'flex-end',
+                    my: 8, mx:2
                 }}
             >
-                <Container maxWidth={false}>
-                    <Box sx={{ pt: 3 }}>
-                        {/*<Link href="/Home">HomeLink</Link>*/}
-                        <Button sx={{ mr: 2 }} variant="contained" onClick={AddProduct}>TestBtn</Button>
-                        {/*<Grid*/}
-                        {/*    container*/}
-                        {/*    spacing={2}*/}
-                        {/*>*/}
-                        {/*    {products.map((product) => (*/}
-                        {/*        <Grid*/}
-                        {/*            item*/}
-                        {/*            key={product.id}*/}
-                        {/*            lg={3}*/}
-                        {/*            md={6}*/}
-                        {/*            xs={12}*/}
-                        {/*        >*/}
-                        {/*            <ProductCard product={product} />*/}
-                        {/*        </Grid>*/}
-                        {/*    ))}*/}
-                        {/*</Grid>*/}
-                        {/*<script defer>*/}
+                <Container maxWidth="false">
+                    <Box sx={{ px: 2, py:2 }}> {/*spacing={2} direction="column"*/}
+                        <Button sx={{ px: 2, my: 2}} variant="contained" onClick={AddProduct}>TestBtn</Button>
                             {contents}
-                        {/*</script>*/}
                     </Box>
                     <Box
                         sx={{

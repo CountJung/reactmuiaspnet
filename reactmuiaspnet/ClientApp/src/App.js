@@ -48,8 +48,10 @@ import { amber, deepOrange, orange, grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
-import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Container, Grid } from '@mui/material';
 import { Budget } from './components/budget';
 import { TrafficByDevice } from './components/TrafficDevice';
@@ -107,7 +109,6 @@ const getDesignTokens = (mode) => ({
         },
     },
 });
-const darkModeTheme = createTheme(getDesignTokens('dark'));
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -157,15 +158,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function DrawerLeft(props) {
     const { window } = props;
     const theme = useTheme();
-    //const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const [mode, setMode] = React.useState('light');
 
-    //const handleDrawerOpen = () => {
-    //    setOpen(true);
-    //};
+    const toggleThemeMode = () => {
+        setMode((currentMode) => (currentMode === 'light' ? 'dark' : 'light'));
+    }
+    const modeTheme = createTheme(getDesignTokens(mode));
 
-    //const handleDrawerClose = () => {
-    //    setOpen(false);
-    //};
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -194,26 +201,26 @@ export default function DrawerLeft(props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <ThemeProvider theme={darkModeTheme}>
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-                <AppBar position="fixed" sx={{
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    ml: { sm: `${drawerWidth}px` },
-                }}>
+        <ThemeProvider theme={modeTheme}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <AppBar position="fixed" open={open}>
                     <Toolbar>
-                        {/*sx={{ mr: 2, ...(open && { display: 'none' }) }}*/}
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
-                            onClick={handleDrawerToggle}
-                            edge="start" sx={{ mr: 2, display: { sm: 'none' } }}
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            sx={{ mr: 2, ...(open && { display: 'none' }) }}
                         > 
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap component="div" >
                             drawer
                         </Typography>
+                        <IconButton sx={{ mx: 1 }} onClick={toggleThemeMode} color="inherit">
+                            {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
                 <Box
@@ -222,53 +229,27 @@ export default function DrawerLeft(props) {
                     aria-label="mailbox folders"
                 >
                     <Drawer
-                        sx={{
-                            display: { xs: 'block', sm: 'none' },
-                            '& .MuiDrawer-paper': {
-                                width: drawerWidth,
-                                boxSizing: 'border-box',
-                            },
-                        }}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                        variant="temporary" anchor="left" container={container}
-                        open={mobileOpen} onClose={handleDrawerToggle}>
-                        {/*<DrawerHeader>*/}
-                        {/*    <IconButton onClick={handleDrawerClose}>*/}
-                        {/*        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}*/}
-                        {/*    </IconButton>*/}
-                        {/*</DrawerHeader>*/}
-                        {/*<Divider />*/}
-                        {/*<List>*/}
-                        {/*    {['Home', 'counter', 'fetchdata'].map((text, index) => (*/}
-                        {/*        <ListItem key={text} component="a" href={"/" + text} sx={{ textAlign: 'center' }} disablePadding > */}
-                        {/*            <ListItemButton>*/}
-                        {/*                <ListItemIcon>*/}
-                        {/*                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
-                        {/*                </ListItemIcon>*/}
-                        {/*                <ListItemText primary={text} />*/}
-                        {/*            </ListItemButton>*/}
-                        {/*        </ListItem>*/}
-                        {/*    ))}*/}
-                        {/*    </List>*/}
-                        {drawer}
-                    </Drawer>
-                    <Drawer
-                        variant="permanent"
+                        variant="persistent"
                         sx={{
                             display: { xs: 'none', sm: 'block' },
                             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                         }}
-                        open={mobileOpen}
+                        open={open} anchor="left"
                     >
+                        <DrawerHeader>
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </DrawerHeader>
                         {drawer}
                     </Drawer>
                 </Box>
-                <Box
-                    component="main"
-                    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-                >
+                {/*<Box*/}
+                {/*    component="main"*/}
+                {/*    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}*/}
+                {/*>*/}
+                {/*</Box>*/}
+                <Main open={open}>
                     <Container maxWidth={false}>
                         <Stack spacing={5} direction='column'>
                             <toolbar />
@@ -278,7 +259,7 @@ export default function DrawerLeft(props) {
                                 <Route path='/counter' element={<Counter />} />
                                 <Route path='/fetchdata' element={<FetchData />} />
                                 <Route path='/ProductPage' element={<ProductPage />} />
-                                <Route path='/ImageGallery' element={<ImageGallery /> } />
+                                <Route path='/ImageGallery' element={<ImageGallery />} />
                             </Routes>
                             <Grid container spacing={2} justifyContent="center" alignItems="center" >
                                 {/*xs: Column widths are integer values between 1 and 12;*/}
@@ -340,10 +321,7 @@ export default function DrawerLeft(props) {
                         {/*    </Grid>*/}
                         {/*</Grid>*/}
                     </Container>
-                </Box>
-            {/*    <Main open={open}>*/}
-            {/*        <DrawerHeader />*/}
-            {/*</Main>*/}
+                </Main>
             </Box>
         </ThemeProvider>
     );
